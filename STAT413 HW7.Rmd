@@ -1,0 +1,73 @@
+---
+title: "STAT413 Hmwk7"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r}
+library(rvest)    
+library(dplyr)    
+library(tidyverse)   
+library(repurrrsive)
+listviewer::jsonedit(gh_users)
+```
+```{r}
+Link <- "https://www.imdb.com/list/ls091520106/"
+page = read_html(Link)
+Title = page%>% html_nodes(".lister-item-header a")%>%
+  html_text()
+Title
+```
+```{r}
+Link <- "https://www.imdb.com/list/ls091520106/"
+page = read_html(Link)
+Rating = page%>% html_nodes(".ipl-rating-star.small .ipl-rating-star__rating")%>%
+  html_text()
+Rating
+```
+```{r}
+Link <- "https://www.imdb.com/list/ls091520106/"
+page = read_html(Link)
+Runtime = page%>% html_nodes(".runtime")%>%
+  html_text()
+Runtime
+```
+```{r}
+moviesdataframe = data.frame(Title, Rating,Runtime)
+moviesdataframe
+```
+```{r}
+##2a. 
+## Nested Lists is Transforming a complicated list into a data frame the is easier to interpret and process. Nested list is simply a list that occurs as an element of another list. They're matrices, a list of rows, where each row is itself a list, or a list of columns where each column is itself a list. 
+```
+```{r}
+##2b. 
+as.tibble(moviesdataframe)
+```
+```{r}
+gh_repos
+##it shoes the proportites and catogories of the element. 
+```
+```{r}
+##2c.
+repos <- tibble(repo = gh_repos)
+repos
+##this shows more detail
+```
+```{r}
+##2d. 
+listviewer::jsonedit(gh_repos)
+##This shows the number of nest list. 
+```
+```{r}
+##2e. 
+users <- tibble(user = gh_users)
+#repos <- tibble(repo = gh_repos)
+```
+```{r}
+tibble(repo=gh_repos)%>%
+  unnest_auto(repo)%>%
+  unnest_auto(repo)
+```
